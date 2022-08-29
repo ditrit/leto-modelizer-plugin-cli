@@ -1,0 +1,19 @@
+{
+  "name": "leto-modelizer-plugin-cli",
+  "version": "0.1.0",
+  "description": "Command line tools to install and manage plugins in leto-modelizer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node src/index.js",
+    "dev:install": "node src/index.js install"
+  },
+  "author": "Vincent Moittie",
+  "license": "Mozilla Public License Version 2.0",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^9.4.0",
+    "conf": "^10.2.0",
+    "prompts": "^2.4.2"
+  }
+}
