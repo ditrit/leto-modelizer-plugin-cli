@@ -14,7 +14,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node src/index.js",
     "dev:install": "node src/index.js install",
-    "dev:init": "node src/index.js init"
+    "dev:init": "node src/index.js init",
+    "lint": "eslint --ext .js .",
+    "lint:fix": "eslint --fix --ext .js .",
+    "lint:report": "eslint --ext .js . -f json-relative > eslint.json"
   },
   "author": "Vincent Moittie",
   "license": "ISC",
@@ -28,6 +31,10 @@
     "@babel/core": "^7.18.13",
     "@babel/preset-env": "^7.18.10",
     "babel-loader": "^8.2.5",
+    "eslint": "^8.23.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-formatter-json-relative": "^0.1.0",
+    "eslint-plugin-import": "^2.26.0",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0"
   }
