@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node src/index.js",
-    "dev:install": "node src/index.js install"
+    "dev:install": "node src/index.js install",
+    "dev:init": "node src/index.js init"
   },
   "author": "Vincent Moittie",
   "license": "Mozilla Public License Version 2.0",
