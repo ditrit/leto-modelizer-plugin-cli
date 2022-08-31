@@ -2,8 +2,15 @@
   "name": "leto-modelizer-plugin-cli",
   "version": "0.1.0",
   "description": "Command line tools to install and manage plugins in leto-modelizer",
-  "main": "index.js",
+  "main": "dist/leto-modelizer-plugin-cli.js",
+  "exports": {
+    ".": {
+      "development": "./src",
+      "default": "./dist/leto-modelizer-plugin-cli.js"
+    }
+  },
   "scripts": {
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node src/index.js",
     "dev:install": "node src/index.js install",
@@ -16,5 +23,12 @@
     "commander": "^9.4.0",
     "conf": "^10.2.0",
     "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.13",
+    "@babel/preset-env": "^7.18.10",
+    "babel-loader": "^8.2.5",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
   }
 }
