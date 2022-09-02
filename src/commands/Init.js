@@ -1,6 +1,10 @@
 const chalk = require('chalk');
 const fs = require('fs');
 
+function sanitize(name) {
+  return name.replaceAll(/(-.)/ig, (v) => v.replace('-', '').toUpperCase());
+}
+
 exports.setup = (program) => {
   program.command('init')
     .description('Init plugin files')
@@ -17,7 +21,7 @@ exports.setup = (program) => {
 
       plugins.forEach((pluginName) => {
         const srcDir = `./node_modules/${pluginName}/public/`;
-        const distDir = `./public/plugins/${pluginName}/`;
+        const distDir = `./public/plugins/${sanitize(pluginName)}/`;
 
         if (!fs.existsSync(srcDir)) {
           console.log(`\n${chalk.red('✘')} Plugin '${pluginName}': No icons and models are imported.`);
@@ -31,13 +35,13 @@ exports.setup = (program) => {
 
       if (plugins.length > 0) {
         const pluginImports = plugins.map(
-          (pluginName) => `import ${pluginName} from '${pluginName};`,
+          (pluginName) => `import ${sanitize(pluginName)} from '${pluginName}';`,
         );
         const content = [
           pluginImports.join('\n'),
-          'export default {',
-          plugins.map((p) => `${p},`).join('\n'),
-          '}',
+          '\nexport default {',
+          plugins.map((p) => `${sanitize(p)},`).join('\n'),
+          '};',
         ].join('\n');
 
         if (!fs.existsSync('src/plugins')) {
