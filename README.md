@@ -37,7 +37,7 @@ Generate issues report with eslint for sonar.
 To install the client in Leto Modelizer, use this command line:
 
 ```
-npm install --save-dev "git://github.com/ditrit/leto-modelizer-plugin-cli.git"
+npm install --save-dev "git://github.com/ditrit/leto-modelizer-plugin-cli.git#0.1.1"
 ```
 
 Add this to package.json scripts:
