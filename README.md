@@ -44,8 +44,8 @@ Add this to package.json scripts:
 
 ```
 {
-  "plugin:install": "leto-modelizer-plugin-cli install",
-  "plugin:init": "leto-modelizer-plugin-cli init",
+    "plugin:install": "node node_modules/leto-modelizer-plugin-cli install",
+    "plugin:init": "node node_modules/leto-modelizer-plugin-cli init"
 }
 ```
 
