@@ -16,7 +16,7 @@ exports.setup = (program) => {
       }
 
       plugins.forEach((pluginName) => {
-        const srcDir = `./node_modules/${pluginName}/public/plugin/`;
+        const srcDir = `./node_modules/${pluginName}/public/`;
         const distDir = `./public/plugins/${pluginName}/`;
 
         if (!fs.existsSync(srcDir)) {
