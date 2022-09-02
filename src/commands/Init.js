@@ -50,7 +50,7 @@ exports.setup = (program) => {
 
         fs.writeFileSync('src/plugins/index.js', content);
 
-        console.log(`\n${chalk.green('✔')} 'src/plugins/index.js' has beeen created or updated.\n`);
+        console.log(`\n${chalk.green('✔')} 'src/plugins/index.js' has been created or updated.\n`);
       }
     });
 };
