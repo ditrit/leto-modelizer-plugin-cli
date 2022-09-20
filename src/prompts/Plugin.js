@@ -11,6 +11,6 @@ exports.getRepositoryUrl = () => prompts({
   type: 'text',
   name: 'repositoryUrl',
   message: 'What is your git repository url?',
-  validate: (value) => /^(?:git@|http:\/\/|https:\/\/).+\.git$/.test(value)
-    || 'Invalid repository url, must be like "git@github.com/repository.git" or "http(s)://github.com/repository.git"',
+  validate: (value) => /^(?:git@|http:\/\/|https:\/\/).+\.git(#.+)?$/.test(value)
+    || 'Invalid repository url, must be like "git@github.com/repository.git", "http(s)://github.com/repository.git" or "http(s)://github.com/repository.git#1.0.0"',
 });
