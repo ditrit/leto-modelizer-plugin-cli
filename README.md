@@ -1,6 +1,6 @@
 # Leto Modelizer Plugin CLI (leto-modelizer-plugin-cli)
 
-Client for Leto Modelizer. It installs plugins and imports there models and icons.
+Client for Leto Modelizer. It installs plugins and imports their models and icons.
 
 ## Install
 
