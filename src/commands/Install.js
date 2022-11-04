@@ -7,8 +7,33 @@ exports.setup = (program) => {
   program.command('install')
     .description('Install plugin in leto-modelizer')
     .action(async () => {
-      const { pluginName } = await pluginPrompt.getName();
-      const { repositoryUrl } = await pluginPrompt.getRepositoryUrl();
+      let pluginName;
+      let repositoryUrl;
+      const argumentsArray = process.argv.slice(3);
+
+      const parseArguments = (args) => {
+        const parsedArgs = {};
+        args.forEach((arg) => {
+          const [name, value] = arg.split('=');
+          parsedArgs[name] = value;
+        });
+        return parsedArgs;
+      };
+
+      if (argumentsArray.length !== 0) {
+        const args = parseArguments(argumentsArray);
+        pluginName = args['repository-name'];
+        repositoryUrl = args['repository-url'];
+        const isValidPluginName = /^[a-zA-Z\s-]+$/.test(pluginName);
+        const isValidRepositoryUrl = /^(?:git@|http:\/\/|https:\/\/).+\.git(#.+)?$/.test(repositoryUrl);
+        if (!isValidPluginName || !isValidRepositoryUrl) {
+          console.log(`\n${chalk.red('✘')} Repository name and/or url invalid.`);
+          return;
+        }
+      } else {
+        pluginName = (await pluginPrompt.getName()).pluginName;
+        repositoryUrl = (await pluginPrompt.getRepositoryUrl()).repositoryUrl;
+      }
 
       console.log(`\n${chalk.blue.bold('⚒')} Installing plugin via npm...`);
       execSync(`npm install -s "${repositoryUrl}"`);
