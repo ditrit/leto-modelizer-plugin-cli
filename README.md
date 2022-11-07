@@ -54,10 +54,20 @@ Add this to package.json scripts:
 ### Install
 
 ```
-leto-modelizer-plugin-cli install
+"plugin:install": "leto-modelizer-plugin-cli install",
 ```
 
 Install plugin with npm then generate or update "plugin.config.js".
+
+Options `repository-name` and `repository-url` can be added with the `npm run plugin:install` command 
+to bypass cli prompts. Example :
+
+```
+npm run plugin:install -- repository-name="name" repository-url="url"
+```
+
+**_NOTE:_**  
+The repository url must be valid like `git@github.com/repository.git`, `http(s)://github.com/repository.git` or `http(s)://github.com/repository.git#1.0.0`.
 
 ### Init
 
