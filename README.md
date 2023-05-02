@@ -37,7 +37,7 @@ Generate issues report with eslint for sonar.
 To install the client in Leto Modelizer, use this command line:
 
 ```
-npm install --save-dev "git://github.com/ditrit/leto-modelizer-plugin-cli.git#0.1.1"
+npm install --save-dev "git://github.com/ditrit/leto-modelizer-plugin-cli.git#0.2.1"
 ```
 
 Add this to package.json scripts:
@@ -48,6 +48,25 @@ Add this to package.json scripts:
     "plugin:init": "node node_modules/leto-modelizer-plugin-cli init"
 }
 ```
+### How to define official plugins
+
+The user can select one or more plugins to install from a list of official plugins. To do that, create a `leto-modelizer-plugin-cli.json` file at the root of Leto Modelizer project. Each object represent a plugin. Example :
+
+```
+[
+  {
+    "name": "terrator-plugin",
+    "url": "https://github.com/ditrit/terrator-plugin.git#0.2.0",
+    "version": "0.2.0"
+  }
+]
+
+```
+
+- `name` attribute is the name of the plugin.
+- `url` attribute is the repository url of the plugin. It must be valid (see **_NOTE_** ).
+- `version` attribute is the release version of the plugin.
+
 
 ## Leto Modelizer commands
 
@@ -89,7 +108,8 @@ leto-modelizer-plugin-cli
 ├ dist                 ⇨ Contains the built application
 └ src                  ⇨ Contains all files for the leto-modelizer-plugin-cli application
   ├ command            ⇨ Contains all the commands
-  └ prompts            ⇨ Contains all the prompts
+  ├ prompts            ⇨ Contains all the prompts
+  └ services           ⇨ Contains all the specific functions
 ```
 
 ### How to release
