@@ -1,70 +1,50 @@
 const chalk = require('chalk');
-const fs = require('fs');
-const { execSync } = require('node:child_process');
-const pluginPrompt = require('../prompts/Plugin');
+const CommandLinePluginRetriever = require('../services/CommandLinePluginRetriever');
+const PromptPluginRetriever = require('../services/PromptPluginRetriever');
+const PluginInstallator = require('../services/PluginInstallator');
 
 exports.setup = (program) => {
   program.command('install')
     .description('Install plugin in leto-modelizer')
     .action(async () => {
-      let pluginName;
-      let repositoryUrl;
-      const argumentsArray = process.argv.slice(3);
+      const userInput = process.argv.slice(3);
+      const { retrieve } = userInput.length !== 0
+        ? CommandLinePluginRetriever
+        : PromptPluginRetriever;
 
-      const parseArguments = (args) => {
-        const parsedArgs = {};
-        args.forEach((arg) => {
-          const [name, value] = arg.split('=');
-          parsedArgs[name] = value;
-        });
-        return parsedArgs;
-      };
+      let plugins = await retrieve(userInput);
 
-      if (argumentsArray.length !== 0) {
-        const args = parseArguments(argumentsArray);
-        pluginName = args['repository-name'];
-        repositoryUrl = args['repository-url'];
-        const isValidPluginName = /^[a-zA-Z\s-]+$/.test(pluginName);
-        const isValidRepositoryUrl = /^(?:git@|http:\/\/|https:\/\/).+\.git(#.+)?$/.test(repositoryUrl);
-        if (!isValidPluginName || !isValidRepositoryUrl) {
-          console.log(`\n${chalk.red('✘')} Repository name and/or url invalid.`);
-          return;
-        }
-      } else {
-        pluginName = (await pluginPrompt.getName()).pluginName;
-        repositoryUrl = (await pluginPrompt.getRepositoryUrl()).repositoryUrl;
-      }
+      if (plugins.length === 0) {
+        console.log(`\n${chalk.red('✘')} No plugin has been installed.`);
 
-      console.log(`\n${chalk.blue.bold('⚒')} Installing plugin via npm...`);
-      execSync(`npm install -s "${repositoryUrl}"`);
-
-      console.log(`\n${chalk.green('✔')} Installation succeed !`);
-
-      const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-      const isPluginInstalled = Object
-        .keys(packageJson.dependencies)
-        .includes(pluginName);
-      if (!isPluginInstalled) {
-        console.log(`\n${chalk.red('✘')} Could not find plugin name in package.json dependencies`);
         return;
       }
 
-      const content = {
-        plugins: [
-          pluginName,
-        ],
-      };
+      console.log(`\n${chalk.blue.bold('⚒')} Installing plugin(s) via npm...`);
 
-      if (fs.existsSync('plugin.config.json')) {
-        const pluginConfig = JSON.parse(fs.readFileSync('plugin.config.json', 'utf8'));
-        if (pluginConfig.plugins.includes(pluginName)) {
-          content.plugins = pluginConfig.plugins;
+      let hasError = false;
+
+      plugins.forEach((plugin) => {
+        if (PluginInstallator.install(plugin)) {
+          console.log(`\n${chalk.green('✔')} Installation of ${plugin.name} successful !`);
         } else {
-          content.plugins = content.plugins.concat(pluginConfig.plugins);
+          hasError = true;
+          plugins = plugins.filter(({ name }) => plugin.name !== name);
+
+          console.log(`\n${chalk.red('✘')} An error occured while installing ${plugin.name} !`);
         }
+      });
+
+      console.log(`\n${chalk.blue.bold('⚒')} Generating configuration file...`);
+
+      PluginInstallator.generateConfigurationFile(plugins);
+
+      if (hasError) {
+        console.log(`\n${chalk.yellow('⚠')} Installation and configuration are done with error(s).`);
+      } else {
+        console.log(`\n${chalk.green('✔')} Installation and configuration are done.`);
       }
 
-      fs.writeFileSync('plugin.config.json', JSON.stringify(content, null, 2));
-      console.log(`\n${chalk.yellow('⚠')} If you have install all your plugin, please ${chalk.bold('\'npm run plugin:init\'')}.\n`);
+      console.log(`\n${chalk.yellow('⚠')} If all your plugins are installed, please ${chalk.bold('\'npm run plugin:init\'')}.\n`);
     });
 };
