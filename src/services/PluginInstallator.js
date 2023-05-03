@@ -36,14 +36,11 @@ function generateConfigurationFile(plugins) {
     const pluginConfig = JSON.parse(fs.readFileSync('plugin.config.json', 'utf8'));
     const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
-    const isPluginAlreadyInstalled = plugins
-      .every(({ name }) => Object.keys(packageJson.dependencies).includes(name));
-
-    if (isPluginAlreadyInstalled) {
-      content.plugins = [...new Set(pluginConfig.plugins)];
-    } else {
-      content.plugins = [...new Set(content.plugins.concat(pluginConfig.plugins))];
-    }
+    content.plugins = [...new Set(
+      content.plugins
+        .concat(pluginConfig.plugins)
+        .filter((name) => Object.keys(packageJson.dependencies).includes(name)),
+    )];
   }
 
   fs.writeFileSync('plugin.config.json', JSON.stringify(content, null, 2));

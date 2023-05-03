@@ -29,8 +29,6 @@ async function getCustomPlugin() {
  * otherwise an empty array.
  */
 async function getOnePluginToInstall(plugin) {
-  console.log(`\n${chalk.italic(' One plugin available')}\n`);
-
   const { name, url, version } = plugin[0];
   const { value } = (await pluginPrompt.confirmInstallation({ name, version }));
 
@@ -45,10 +43,6 @@ async function getOnePluginToInstall(plugin) {
  * otherwise an empty array.
  */
 async function getMultiPluginsToInstall(plugins) {
-  const pluginNames = plugins.map(({ name }) => name).join(', ');
-
-  console.log(`\n${chalk.italic(' Official plugin(s) : ')}${chalk.italic(pluginNames)}\n`);
-
   const pluginList = plugins.map((plugin) => ({ title: `${plugin.name} (${plugin.version})`, value: plugin.url }));
   const selectedPlugins = (await pluginPrompt.getOfficialPlugins(pluginList)).type;
 
