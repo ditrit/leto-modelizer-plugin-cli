@@ -1,36 +1,26 @@
 # Leto Modelizer Plugin CLI (leto-modelizer-plugin-cli)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ditrit_leto-modelizer-plugin-cli&metric=alert_status)](https://sonarcloud.io/summary/overall?id=ditrit_leto-modelizer-plugin-cli)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=ditrit_leto-modelizer-plugin-cli&metric=reliability_rating)](https://sonarcloud.io/summary/overall?id=ditrit_leto-modelizer-plugin-cli)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=ditrit_leto-modelizer-plugin-cli&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=ditrit_leto-modelizer-plugin-cli)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=ditrit_leto-modelizer-plugin-cli&metric=security_rating)](https://sonarcloud.io/summary/overall?id=ditrit_leto-modelizer-plugin-cli)
 
-Client for Leto Modelizer. It installs plugins and imports their models and icons.
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=ditrit_leto-modelizer-plugin-cli&metric=code_smells)](https://sonarcloud.io/summary/overall?id=ditrit_leto-modelizer-plugin-cli)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=ditrit_leto-modelizer-plugin-cli&metric=bugs)](https://sonarcloud.io/summary/overall?id=ditrit_leto-modelizer-plugin-cli)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=ditrit_leto-modelizer-plugin-cli&metric=vulnerabilities)](https://sonarcloud.io/summary/overall?id=ditrit_leto-modelizer-plugin-cli)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=ditrit_leto-modelizer-plugin-cli&metric=sqale_index)](https://sonarcloud.io/summary/overall?id=ditrit_leto-modelizer-plugin-cli)
 
-## Install
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=ditrit_leto-modelizer-plugin-cli&metric=ncloc)](https://sonarcloud.io/summary/overall?id=ditrit_leto-modelizer-plugin-cli)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ditrit_leto-modelizer-plugin-cli&metric=coverage)](https://sonarcloud.io/summary/overall?id=ditrit_leto-modelizer-plugin-cli)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=ditrit_leto-modelizer-plugin-cli&metric=duplicated_lines_density)](https://sonarcloud.io/summary/overall?id=ditrit_leto-modelizer-plugin-cli)
 
-```
-npm install
-```
+[![](https://dcbadge.vercel.app/api/server/zkKfj9gj2C?style=flat&theme=default-inverted)](https://discord.gg/zkKfj9gj2C)
 
-## Default commands
+Client for [Leto-Modelizer](https://github.com/ditrit/leto-modelizer). It installs plugins and imports their models and icons.
 
-Usage explanation of scripts in `package.json`.
+## Requirements
 
-### dev
-
-Run the application in dev mode.
-
-### build
-
-Build the application in `dist` folder.
-
-### lint
-
-Run eslint check on the project.
-
-### lint:fix
-
-Run eslint fix on the project.
-
-### lint:report
-
-Generate issues report with eslint for sonar.
+* node - [v20.16.0](https://nodejs.org/en/blog/release/v20.16.0)
+* npm - [v10.8.1](https://www.npmjs.com/package/npm/v/10.8.1)
 
 ## Leto Modelizer Install
 
@@ -55,18 +45,23 @@ The user can select one or more plugins to install from a list of official plugi
 ```
 [
   {
+    "displayName": "Terraform plugin",
     "name": "terrator-plugin",
-    "url": "https://github.com/ditrit/terrator-plugin.git#0.2.0",
-    "version": "0.2.0"
+    "scope": "ditrit",
+    "version": "0.12.0" ,
+    "url": "https://github.com/ditrit/terrator-plugin.git#0.11.0"
   }
 ]
 
 ```
 
-- `name` attribute is the name of the plugin.
+- `displayName` attribute represents the plugin's display name, which is used to assist the user during installation.
+- `name` attribute is the plugin's name and must match the one defined in the plugin project.
 - `url` attribute is the repository url of the plugin. It must be valid (see **_NOTE_** ).
+- `scope` attribute is the organisation name of the plugin.
 - `version` attribute is the release version of the plugin.
 
+:warning: The `url` attribute is optional! If specified, the plugin will be installed from the repository instead of the registry.
 
 ## Leto Modelizer commands
 
@@ -76,13 +71,13 @@ The user can select one or more plugins to install from a list of official plugi
 "plugin:install": "leto-modelizer-plugin-cli install",
 ```
 
-Install plugin with npm then generate or update "plugin.config.js".
+Install plugin with npm then generate.
 
-Options `repository-name` and `repository-url` can be added with the `npm run plugin:install` command 
+Options `name` and `version` can be added with the `npm run plugin:install` command 
 to bypass cli prompts. Example :
 
 ```
-npm run plugin:install -- repository-name="name" repository-url="url"
+npm run plugin:install -- name="name" version="version"
 ```
 
 **_NOTE:_**  
@@ -94,54 +89,17 @@ The repository url must be valid like `git@github.com/repository.git`, `http(s):
 "plugin:init": "leto-modelizer-plugin-cli init",
 ```
 
-Import icons and models of each plugin present in "plugin.config.js".
+Import icons and models of each plugin present in `package.json`.
 Then generate or update "src/plugins/index.js".
 
-## Development
+## Delete plugin
 
-### Directory structure
+A future command will be introduced to perform this action.
 
-This is the default directory structure we use for the project:
+However, here are the actions you need to take to delete the plugin:
 
-```
-leto-modelizer-plugin-cli
-├ dist                 ⇨ Contains the built application
-└ src                  ⇨ Contains all files for the leto-modelizer-plugin-cli application
-  ├ command            ⇨ Contains all the commands
-  ├ prompts            ⇨ Contains all the prompts
-  └ services           ⇨ Contains all the specific functions
-```
+1. Remove wanted plugin from dependencies in `package.json`
+2. Delete folder `public/plugins/[YOUR_PLUGIN]`
+3. Delete folder `node_modules`
+4. Regenerate `package-lock.json`
 
-### How to release
-
-We use [Semantic Versioning](https://semver.org/spec/v2.0.0.html) as guideline for the version management.
-
-Steps to release:
-- Create a new branch labeled `release/vX.Y.Z` from the latest `main`.
-- Improve the version number in `package.json`, `package-lock.json` and `changelog.md`.
-- Verify the content of the `changelog.md`.
-- Commit the modifications with the label `Release version X.Y.Z`.
-- Create a pull request on github for this branch into `main`.
-- Once the pull request validated and merged, tag the `main` branch with `vX.Y.Z`
-- After the tag is pushed, make the release on the tag in GitHub
-
-### Git: Default branch
-
-The default branch is main. Direct commit on it is forbidden. The only way to update the application is through pull request.
-
-Release tag are only done on the `main` branch.
-
-### Git: Branch naming policy
-
-`[BRANCH_TYPE]/[BRANCH_NAME]`
-
-* `BRANCH_TYPE` is a prefix to describe the purpose of the branch. Accepted prefixes are:
-    * `feature`, used for feature development
-    * `bugfix`, used for bug fix
-    * `improvement`, used for refacto
-    * `library`, used for updating library
-    * `prerelease`, used for preparing the branch for the release
-    * `release`, used for releasing project
-    * `hotfix`, used for applying a hotfix on main
-    * `poc`, used for proof of concept
-* `BRANCH_NAME` is managed by this regex: `[a-z0-9._-]` (`_` is used as space character).
