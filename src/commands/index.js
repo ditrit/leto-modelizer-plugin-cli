@@ -1,7 +1,7 @@
-const install = require('./Install');
-const init = require('./Init');
+import install from './Install.js';
+import init from './Init.js';
 
-module.exports = {
+export default {
   install,
   init,
 };

@@ -1,9 +1,17 @@
-const chalk = require('chalk');
-const CommandLinePluginRetriever = require('../services/CommandLinePluginRetriever');
-const PromptPluginRetriever = require('../services/PromptPluginRetriever');
-const PluginInstallator = require('../services/PluginInstallator');
+import chalk from 'chalk';
+import * as CommandLinePluginRetriever from '../services/CommandLinePluginRetriever.js';
+import * as PromptPluginRetriever from '../services/PromptPluginRetriever.js';
+import * as PluginInstallator from '../services/PluginInstallator.js';
 
-exports.setup = (program) => {
+/**
+ * @typedef {import('../models/Plugin').Plugin} Plugin
+ */
+
+/**
+ * Install plugin.
+ * @param {Object} program - Program to run command.
+ */
+export default function setup(program) {
   program.command('install')
     .description('Install plugin in leto-modelizer')
     .action(async () => {
@@ -26,25 +34,21 @@ exports.setup = (program) => {
 
       plugins.forEach((plugin) => {
         if (PluginInstallator.install(plugin)) {
-          console.log(`\n${chalk.green('✔')} Installation of ${plugin.name} successful !`);
+          console.log(`\n${chalk.green('✔')} Installation of ${plugin.name}@${plugin.version} successful !`);
         } else {
           hasError = true;
           plugins = plugins.filter(({ name }) => plugin.name !== name);
 
-          console.log(`\n${chalk.red('✘')} An error occured while installing ${plugin.name} !`);
+          console.log(`\n${chalk.red('✘')} An error occurred while installing ${plugin.name} !`);
         }
       });
 
-      console.log(`\n${chalk.blue.bold('⚒')} Generating configuration file...`);
-
-      PluginInstallator.generateConfigurationFile(plugins);
-
       if (hasError) {
-        console.log(`\n${chalk.yellow('⚠')} Installation and configuration are done with error(s).`);
+        console.log(`\n${chalk.yellow('⚠')} Installation is done with error(s).`);
       } else {
-        console.log(`\n${chalk.green('✔')} Installation and configuration are done.`);
+        console.log(`\n${chalk.green('✔')} Installation is done.`);
       }
 
       console.log(`\n${chalk.yellow('⚠')} If all your plugins are installed, please ${chalk.bold('\'npm run plugin:init\'')}.\n`);
     });
-};
+}

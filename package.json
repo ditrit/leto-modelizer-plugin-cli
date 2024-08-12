@@ -1,5 +1,5 @@
 {
-  "name": "leto-modelizer-plugin-cli",
+  "name": "@ditrit/leto-modelizer-plugin-cli",
   "version": "1.0.0",
   "description": "Command line tools to install and manage plugins in leto-modelizer",
   "main": "dist/leto-modelizer-plugin-cli.js",
@@ -9,6 +9,7 @@
       "default": "./dist/leto-modelizer-plugin-cli.js"
     }
   },
+  "type": "module",
   "scripts": {
     "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,23 +20,23 @@
     "lint:fix": "eslint --fix --ext .js .",
     "lint:report": "eslint --ext .js . -f json-relative > eslint.json"
   },
-  "author": "Vincent Moittie",
-  "license": "Mozilla Public License Version 2.0",
+  "author": "Vincent Moittie <moittie.vincent@gmail.com>",
+  "license": "MPL-2.0",
   "dependencies": {
-    "chalk": "^4.1.2",
-    "commander": "^9.4.0",
-    "conf": "^10.2.0",
-    "prompts": "^2.4.2"
+    "chalk": "=5.3.0",
+    "commander": "=12.1.0",
+    "conf": "=13.0.1",
+    "prompts": "=2.4.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.18.13",
-    "@babel/preset-env": "^7.18.10",
-    "babel-loader": "^8.2.5",
-    "eslint": "^8.23.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-formatter-json-relative": "^0.1.0",
-    "eslint-plugin-import": "^2.26.0",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0"
+    "@babel/core": "=7.25.2",
+    "@babel/preset-env": "=7.25.3",
+    "babel-loader": "=9.1.3",
+    "eslint": "=8.55.0",
+    "eslint-config-airbnb-base": "=15.0.0",
+    "eslint-formatter-json-relative": "=0.1.0",
+    "eslint-plugin-import": "=2.29.1",
+    "webpack": "=5.93.0",
+    "webpack-cli": "=5.1.4"
   }
 }
