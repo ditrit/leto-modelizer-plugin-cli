@@ -1,0 +1,21 @@
+[
+  {
+    "displayName": "Terraform plugin",
+    "name": "terrator-plugin",
+    "scope": "ditrit",
+    "version": "0.12.0" ,
+    "url": "https://github.com/ditrit/terrator-plugin.git#0.11.0"
+  },
+  {
+    "displayName": "GitHub Action plugin",
+    "name": "githubator-plugin",
+    "scope": "ditrit",
+    "version": "0.5.0"
+  },
+  {
+    "displayName": "Kubernetes plugin",
+    "name": "kubernator-plugin",
+    "scope": "ditrit",
+    "version": "0.3.0"
+  }
+]
