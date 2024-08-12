@@ -1,5 +1,5 @@
-const chalk = require('chalk');
-const PluginValidator = require('./PluginValidator');
+import chalk from 'chalk';
+import { getPluginsFromConfig } from './PluginConfiguration.js';
 
 /**
  * Parse an array of string inputs into an object with camelCase names property.
@@ -25,22 +25,16 @@ function parseInputs(inputs) {
  * @returns {Array<Object>} An array of object containing the validated repository name and URL,
  * otherwise an empty array.
  */
-async function retrieve(inputs) {
-  const { repositoryName, repositoryUrl } = parseInputs(inputs);
-  const validator = new PluginValidator(repositoryName, repositoryUrl);
+export async function retrieve(inputs) {
+  const plugins = getPluginsFromConfig();
+  const { name, version } = parseInputs(inputs);
+  const plugin = plugins.find((p) => p.name === name && p.version === version);
 
-  if (!validator.isValid()) {
-    console.log(`\n${chalk.red('✘')} Repository name and/or url invalid.`);
+  if (!plugin) {
+    console.log(`\n${chalk.red('✘')} Plugin name and/or version is invalid.`);
 
     return [];
   }
 
-  return [{
-    name: repositoryName,
-    url: repositoryUrl,
-  }];
+  return [plugin];
 }
-
-module.exports = {
-  retrieve,
-};
