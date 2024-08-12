@@ -1,26 +1,16 @@
 import chalk from 'chalk';
-import fs from 'fs';
 import * as CommandLinePluginRetriever from '../services/CommandLinePluginRetriever.js';
 import * as PromptPluginRetriever from '../services/PromptPluginRetriever.js';
 import * as PluginInstallator from '../services/PluginInstallator.js';
-import { getPluginsFromPackage } from '../services/PluginConfiguration.js';
+import { generatePluginsFile } from '../services/PluginConfiguration.js';
 
 /**
  * @typedef {import('../models/Plugin').Plugin} Plugin
  */
 
 /**
- * Sanitize name to remove '-' and capitalize letter after.
- * @param {string} name - Name to sanitize.
- * @returns {string} Sanitized name.
- */
-function sanitize(name) {
-  return name.replaceAll(/(-.)/ig, (v) => v.replace('-', '').toUpperCase());
-}
-
-/**
  * Install plugin.
- * @param {Object} program - Program to run command.
+ * @param {Object} program - Commander program to run command.
  */
 export default function setup(program) {
   program.command('install')
@@ -31,7 +21,7 @@ export default function setup(program) {
         ? CommandLinePluginRetriever
         : PromptPluginRetriever;
 
-      let plugins = await retrieve(userInput);
+      let plugins = await retrieve(userInput, 'install');
 
       if (plugins.length === 0) {
         console.log(`\n${chalk.red('✘')} No plugin has been installed.`);
@@ -60,24 +50,6 @@ export default function setup(program) {
         console.log(`\n${chalk.green('✔')} Installation is done.`);
       }
 
-      if (!fs.existsSync('src/plugins')) {
-        fs.mkdirSync('src/plugins');
-      }
-
-      const allInstalledPlugins = getPluginsFromPackage();
-
-      fs.writeFileSync('src/plugins/index.js', [
-        ...allInstalledPlugins.map(
-          (plugin) => `import ${sanitize(plugin.name)} from '${plugin.packageKey}';`,
-        ),
-        '\nexport default {',
-        ...allInstalledPlugins.map((plugin) => `  ${sanitize(plugin.name)},`),
-        '};\n',
-      ].join('\n'));
-
-      console.log('\nList of all  installed plugins:');
-      allInstalledPlugins.forEach((plugin) => {
-        console.log(`\n  • ${plugin.name}@${plugin.version}`);
-      });
+      generatePluginsFile();
     });
 }
