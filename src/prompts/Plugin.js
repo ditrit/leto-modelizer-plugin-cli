@@ -1,46 +1,25 @@
-const prompts = require('prompts');
-const PluginValidator = require('../services/PluginValidator');
+import prompts from 'prompts';
 
-exports.getName = () => prompts({
-  type: 'text',
-  name: 'pluginName',
-  message: 'What is your plugin name?',
-  validate: (value) => new PluginValidator(value).isPluginNameValid()
-    || 'Plugin name must be only letters, spaces, or dashes',
-});
+export async function getOfficialPlugins(plugins) {
+  return (await prompts({
+    type: 'multiselect',
+    name: 'type',
+    message: 'Choose plugin(s) to install',
+    choices: plugins.map((plugin) => ({
+      title: `${plugin.displayName} (${plugin.version})`,
+      value: plugin,
+    })),
+    initial: 0,
+  })).type;
+}
 
-exports.getRepositoryUrl = () => prompts({
-  type: 'text',
-  name: 'repositoryUrl',
-  message: 'What is your git repository url?',
-  validate: (value) => new PluginValidator(null, value).isRepositoryUrlValid()
-    || 'Invalid repository url, must be like "git@github.com/repository.git", "http(s)://github.com/repository.git" or "http(s)://github.com/repository.git#1.0.0"',
-});
-
-exports.getInstallationType = () => prompts({
-  type: 'select',
-  name: 'type',
-  message: 'Choose your installation type:',
-  choices: [
-    { title: 'Official plugins', value: 'official' },
-    { title: 'Custom plugin', value: 'custom' },
-  ],
-  initial: 0,
-});
-
-exports.getOfficialPlugins = (choices) => prompts({
-  type: 'multiselect',
-  name: 'type',
-  message: 'Choose plugin(s) to install',
-  choices,
-  initial: 0,
-});
-
-exports.confirmInstallation = ({ name, version }) => prompts({
-  type: 'toggle',
-  name: 'value',
-  message: `Install ${name} (${version}) ?`,
-  initial: true,
-  active: 'yes',
-  inactive: 'no',
-});
+export async function confirmInstallation(plugin) {
+  return (await prompts({
+    type: 'toggle',
+    name: 'value',
+    message: `Install ${plugin.displayName} (${plugin.version}) ?`,
+    initial: true,
+    active: 'yes',
+    inactive: 'no',
+  })).value;
+}
