@@ -15,10 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update nodejs to version `20.16.0`.
 - Update npm to version `10.8.1`.
+- Update `install` command to init plugin too.
 - All plugins must now be defined in the configuration file to be installed.
 - Command line options:
   - Remove `repository-name` and `repository-url`.
   - Add `name` and `version`.
+
+### Removed
+
+- Command `init` is done in install command now.
 
 ## [1.0.0] - 2023/05/03
 

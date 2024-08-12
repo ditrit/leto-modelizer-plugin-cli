@@ -1,11 +1,22 @@
 import chalk from 'chalk';
+import fs from 'fs';
 import * as CommandLinePluginRetriever from '../services/CommandLinePluginRetriever.js';
 import * as PromptPluginRetriever from '../services/PromptPluginRetriever.js';
 import * as PluginInstallator from '../services/PluginInstallator.js';
+import { getPluginsFromPackage } from '../services/PluginConfiguration.js';
 
 /**
  * @typedef {import('../models/Plugin').Plugin} Plugin
  */
+
+/**
+ * Sanitize name to remove '-' and capitalize letter after.
+ * @param {string} name - Name to sanitize.
+ * @returns {string} Sanitized name.
+ */
+function sanitize(name) {
+  return name.replaceAll(/(-.)/ig, (v) => v.replace('-', '').toUpperCase());
+}
 
 /**
  * Install plugin.
@@ -49,6 +60,24 @@ export default function setup(program) {
         console.log(`\n${chalk.green('✔')} Installation is done.`);
       }
 
-      console.log(`\n${chalk.yellow('⚠')} If all your plugins are installed, please ${chalk.bold('\'npm run plugin:init\'')}.\n`);
+      if (!fs.existsSync('src/plugins')) {
+        fs.mkdirSync('src/plugins');
+      }
+
+      const allInstalledPlugins = getPluginsFromPackage();
+
+      fs.writeFileSync('src/plugins/index.js', [
+        ...allInstalledPlugins.map(
+          (plugin) => `import ${sanitize(plugin.name)} from '${plugin.packageKey}';`,
+        ),
+        '\nexport default {',
+        ...allInstalledPlugins.map((plugin) => `  ${sanitize(plugin.name)},`),
+        '};\n',
+      ].join('\n'));
+
+      console.log('\nList of all  installed plugins:');
+      allInstalledPlugins.forEach((plugin) => {
+        console.log(`\n  • ${plugin.name}@${plugin.version}`);
+      });
     });
 }

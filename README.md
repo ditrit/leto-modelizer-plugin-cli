@@ -71,7 +71,10 @@ The user can select one or more plugins to install from a list of official plugi
 "plugin:install": "leto-modelizer-plugin-cli install",
 ```
 
-Install plugin with npm then generate.
+Tasks performed during installation:
+- Install plugin(s) from npm.
+- Import icons and models from each selected plugins.
+- Then generate or update "src/plugins/index.js".
 
 Options `name` and `version` can be added with the `npm run plugin:install` command 
 to bypass cli prompts. Example :
@@ -82,15 +85,6 @@ npm run plugin:install -- name="name" version="version"
 
 **_NOTE:_**  
 The repository url must be valid like `git@github.com/repository.git`, `http(s)://github.com/repository.git` or `http(s)://github.com/repository.git#1.0.0`.
-
-### Init
-
-```
-"plugin:init": "leto-modelizer-plugin-cli init",
-```
-
-Import icons and models of each plugin present in `package.json`.
-Then generate or update "src/plugins/index.js".
 
 ## Delete plugin
 
