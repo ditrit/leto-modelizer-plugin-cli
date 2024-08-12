@@ -63,6 +63,9 @@ The user can select one or more plugins to install from a list of official plugi
 
 :warning: The `url` attribute is optional! If specified, the plugin will be installed from the repository instead of the registry.
 
+**_NOTE:_**  
+The repository url must be valid like `git@github.com/repository.git`, `http(s)://github.com/repository.git` or `http(s)://github.com/repository.git#1.0.0`.
+
 ## Leto Modelizer commands
 
 ### Install
@@ -72,28 +75,31 @@ The user can select one or more plugins to install from a list of official plugi
 ```
 
 Tasks performed during installation:
-- Install plugin(s) from npm.
-- Import icons and models from each selected plugins.
+- Install plugin(s) using npm.
+- Import icons and models from each installed plugins.
 - Then generate or update "src/plugins/index.js".
 
-Options `name` and `version` can be added with the `npm run plugin:install` command 
+Options `name` and `version` can be added with the `npm run plugin:install` command
 to bypass cli prompts. Example :
 
 ```
 npm run plugin:install -- name="name" version="version"
 ```
 
-**_NOTE:_**  
-The repository url must be valid like `git@github.com/repository.git`, `http(s)://github.com/repository.git` or `http(s)://github.com/repository.git#1.0.0`.
+### Uninstall
 
-## Delete plugin
+```
+"plugin:uninstall": "leto-modelizer-plugin-cli uninstall",
+```
 
-A future command will be introduced to perform this action.
+Tasks performed during installation:
+- Uninstall plugin(s) using npm.
+- Delete icons and models from each deleted plugins.
+- Then generate or update "src/plugins/index.js".
 
-However, here are the actions you need to take to delete the plugin:
+Options `name` and `version` can be added with the `npm run plugin:uninstall` command
+to bypass cli prompts. Example :
 
-1. Remove wanted plugin from dependencies in `package.json`
-2. Delete folder `public/plugins/[YOUR_PLUGIN]`
-3. Delete folder `node_modules`
-4. Regenerate `package-lock.json`
-
+```
+npm run plugin:uninstall -- name="name" version="version"
+```
