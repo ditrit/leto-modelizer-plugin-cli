@@ -16,3 +16,18 @@ export function getPluginsFromConfig() {
 
   return plugins.map((data) => new Plugin(data));
 }
+
+/**
+ * Retrieve plugins from the 'leto-modelizer-plugin-cli.json' file
+ * and include only those that are listed in the dependencies of 'package.json'.
+ *
+ * @returns {Plugin[]} The installed plugins, otherwise an empty array.
+ */
+export function getPluginsFromPackage() {
+  const allPlugins = getPluginsFromConfig();
+  const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+
+  return Object.keys(packageJson.dependencies)
+    .map((key) => allPlugins.find((plugin) => plugin.packageKey === key))
+    .filter((value) => !!value);
+}
