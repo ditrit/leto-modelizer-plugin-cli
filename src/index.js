@@ -1,6 +1,5 @@
-#! /usr/bin/env node
-const { Command } = require('commander');
-const commands = require('./commands');
+import { Command } from 'commander';
+import commands from './commands/index.js';
 
 const program = new Command();
 
@@ -9,6 +8,6 @@ program
   .description('CLI install and manage plugins in leto-modelizer')
   .version('1.0.0');
 
-Object.keys(commands).forEach((command) => commands[command].setup(program));
+Object.keys(commands).forEach((command) => commands[command](program));
 
 program.parse();
