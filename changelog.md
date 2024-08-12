@@ -10,12 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add workflow to publish on npm.
+- Add command to uninstall plugin(s).
 
 ### Changed
 
 - Update nodejs to version `20.16.0`.
 - Update npm to version `10.8.1`.
-- Update `install` command to init plugin too.
+- Update `install` command to init plugin.
 - All plugins must now be defined in the configuration file to be installed.
 - Command line options:
   - Remove `repository-name` and `repository-url`.
