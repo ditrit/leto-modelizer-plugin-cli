@@ -1,6 +1,6 @@
 {
   "name": "@ditrit/leto-modelizer-plugin-cli",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Command line tools to install and manage plugins in leto-modelizer",
   "main": "dist/leto-modelizer-plugin-cli.js",
   "exports": {
