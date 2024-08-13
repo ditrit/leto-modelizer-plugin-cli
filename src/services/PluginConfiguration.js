@@ -59,6 +59,11 @@ export function generatePluginsFile() {
     '};\n',
   ].join('\n'));
 
+  if (allInstalledPlugins.length === 0) {
+    console.log('\nNo plugin installed.');
+    return;
+  }
+
   console.log('\nList of all installed plugins:');
   allInstalledPlugins.forEach((plugin) => {
     console.log(`\n  • ${plugin.name}@${plugin.version}`);
