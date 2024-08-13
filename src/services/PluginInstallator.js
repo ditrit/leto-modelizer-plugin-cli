@@ -27,7 +27,7 @@ export function install(plugin) {
   }
 
   const srcDir = `./node_modules/${plugin.packageKey}/public/`;
-  const distDir = `./public/plugins/${plugin.name}/`;
+  const distDir = `./public/plugins/${plugin.packageKey}/`;
 
   if (!fs.existsSync(srcDir)) {
     console.log(`\n${chalk.red('✘')} Plugin '${plugin.name}': No icons and models are imported.`);
