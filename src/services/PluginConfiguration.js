@@ -31,3 +31,36 @@ export function getPluginsFromPackage() {
     .map((key) => allPlugins.find((plugin) => plugin.packageKey === key))
     .filter((value) => !!value);
 }
+
+/**
+ * Sanitize name to remove '-' and capitalize letter after.
+ * @param {string} name - Name to sanitize.
+ * @returns {string} Sanitized name.
+ */
+function sanitize(name) {
+  return name.replaceAll(/(-.)/ig, (v) => v.replace('-', '').toUpperCase());
+}
+
+/**
+ * Generate `src/plugins/index.js` that list of installed plugin to be used in Leto-Modelizer.
+ */
+export function generatePluginsFile() {
+  if (!fs.existsSync('src/plugins')) {
+    fs.mkdirSync('src/plugins');
+  }
+  const allInstalledPlugins = getPluginsFromPackage();
+
+  fs.writeFileSync('src/plugins/index.js', [
+    ...allInstalledPlugins.map(
+      (plugin) => `import ${sanitize(plugin.name)} from '${plugin.packageKey}';`,
+    ),
+    '\nexport default {',
+    ...allInstalledPlugins.map((plugin) => `  ${sanitize(plugin.name)},`),
+    '};\n',
+  ].join('\n'));
+
+  console.log('\nList of all installed plugins:');
+  allInstalledPlugins.forEach((plugin) => {
+    console.log(`\n  • ${plugin.name}@${plugin.version}`);
+  });
+}

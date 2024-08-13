@@ -12,8 +12,8 @@ import { getPluginsFromConfig } from './PluginConfiguration.js';
  * @returns {Promise<Plugin[]>} A promise with an array containing a plugin object
  * otherwise an empty array.
  */
-async function getOnePluginToInstall(plugins) {
-  const value = (await pluginPrompt.confirmInstallation(plugins[0]));
+async function getOnePluginToInstall(plugins, action) {
+  const value = (await pluginPrompt.confirmAction(plugins[0], action));
 
   return value ? plugins : [];
 }
@@ -25,8 +25,8 @@ async function getOnePluginToInstall(plugins) {
  * @returns {Promise<Plugin[]>} A promise with an array of selected plugin objects,
  * otherwise an empty array.
  */
-async function getMultiPluginsToInstall(plugins) {
-  const selectedPlugins = await pluginPrompt.getOfficialPlugins(plugins);
+async function getMultiPluginsToInstall(plugins, action) {
+  const selectedPlugins = await pluginPrompt.getOfficialPlugins(plugins, action);
 
   if (!selectedPlugins || selectedPlugins.length === 0) {
     return [];
@@ -42,7 +42,7 @@ async function getMultiPluginsToInstall(plugins) {
  * @returns {Promise<Plugin[]>} An array of objects representing the plugin(s),
  * otherwise an empty array.
  */
-async function getOfficialPlugins() {
+async function getOfficialPlugins(action) {
   const plugins = getPluginsFromConfig();
 
   if (plugins.length === 0) {
@@ -52,10 +52,10 @@ async function getOfficialPlugins() {
   }
 
   if (plugins.length === 1) {
-    return getOnePluginToInstall(plugins);
+    return getOnePluginToInstall(plugins, action);
   }
 
-  return getMultiPluginsToInstall(plugins);
+  return getMultiPluginsToInstall(plugins, action);
 }
 
 /**
@@ -65,6 +65,6 @@ async function getOfficialPlugins() {
  * which contain the name and URL of each selected plugin. If no plugins are available or selected,
  * an empty array is returned.
  */
-export async function retrieve() {
-  return getOfficialPlugins();
+export async function retrieve(inputs, action) {
+  return getOfficialPlugins(action);
 }

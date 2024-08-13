@@ -15,7 +15,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node src/index.js",
     "dev:install": "node src/index.js install",
-    "dev:init": "node src/index.js init",
+    "dev:uninstall": "node src/index.js uninstall",
     "lint": "eslint --ext .js .",
     "lint:fix": "eslint --fix --ext .js .",
     "lint:report": "eslint --ext .js . -f json-relative > eslint.json"
@@ -26,6 +26,7 @@
     "chalk": "=5.3.0",
     "commander": "=12.1.0",
     "conf": "=13.0.1",
+    "fs-extra2": "^1.0.1",
     "prompts": "=2.4.2"
   },
   "devDependencies": {
